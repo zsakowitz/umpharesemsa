@@ -1,5 +1,7 @@
 // @ts-check
 
+// TODO: Update file in cloud server
+
 import { affixes, roots } from "@zsnout/ithkuil/data"
 import { wordToIthkuil } from "@zsnout/ithkuil/generate"
 import { glossWord } from "@zsnout/ithkuil/gloss"
@@ -10,6 +12,7 @@ import {
   GatewayIntentBits,
   MessagePayload,
   Partials,
+  PresenceUpdateStatus,
   bold,
   italic,
 } from "discord.js"
@@ -24,6 +27,7 @@ export const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
   partials: [Partials.Channel, Partials.Message],
+  presence: { status: PresenceUpdateStatus.Online },
 })
 
 client.once(Events.ClientReady, async (c) => {
@@ -76,7 +80,13 @@ client.on(Events.MessageCreate, async (message) => {
   }
 })
 
-client.login(process.env.ITHKUIL_BOT_TOKEN)
+client.login(
+  // @ts-ignore
+  typeof Deno == "object"
+    ? // @ts-ignore
+      Deno.env.get("ITHKUIL_BOT_TOKEN")
+    : process.env.ITHKUIL_BOT_TOKEN
+)
 
 const allRoots = roots.flatMap((root) => [
   { stem: 0, label: root.stems[0], cr: root.cr, abbr: "" },
