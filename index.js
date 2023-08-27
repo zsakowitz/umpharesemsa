@@ -5,9 +5,27 @@ import { roots } from "@zsnout/ithkuil/data/roots-latest.js"
 import { wordToIthkuil } from "@zsnout/ithkuil/generate/index.js"
 import { glossWord } from "@zsnout/ithkuil/gloss/index.js"
 import { unglossWord } from "@zsnout/ithkuil/ungloss/index.js"
-import { Events, MessagePayload, bold, italic } from "discord.js"
+import {
+  Client,
+  Events,
+  GatewayIntentBits,
+  MessagePayload,
+  Partials,
+  bold,
+  italic,
+} from "discord.js"
 import fuzzy from "fuzzysort"
-import { client } from "./client.js"
+
+export const client = new Client({
+  intents: [
+    GatewayIntentBits.DirectMessages,
+    GatewayIntentBits.DirectMessageReactions,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildMessageReactions,
+    GatewayIntentBits.MessageContent,
+  ],
+  partials: [Partials.Channel, Partials.Message],
+})
 
 client.once(Events.ClientReady, async (c) => {
   console.log(`Ready! Logged in as ${c.user.tag}`)
