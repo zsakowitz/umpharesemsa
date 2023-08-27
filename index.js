@@ -1,10 +1,9 @@
 // @ts-check
 
-import { affixes } from "@zsnout/ithkuil/data/affixes-latest.js"
-import { roots } from "@zsnout/ithkuil/data/roots-latest.js"
-import { wordToIthkuil } from "@zsnout/ithkuil/generate/index.js"
-import { glossWord } from "@zsnout/ithkuil/gloss/index.js"
-import { unglossWord } from "@zsnout/ithkuil/ungloss/index.js"
+import { affixes, roots } from "@zsnout/ithkuil/data"
+import { wordToIthkuil } from "@zsnout/ithkuil/generate"
+import { glossWord } from "@zsnout/ithkuil/gloss"
+import { unglossWord } from "@zsnout/ithkuil/ungloss"
 import {
   Client,
   Events,
@@ -15,7 +14,6 @@ import {
   italic,
 } from "discord.js"
 import fuzzy from "fuzzysort"
-
 export const client = new Client({
   intents: [
     GatewayIntentBits.DirectMessages,
