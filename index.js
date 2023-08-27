@@ -14,6 +14,7 @@ import {
   italic,
 } from "discord.js"
 import fuzzy from "fuzzysort"
+
 export const client = new Client({
   intents: [
     GatewayIntentBits.DirectMessages,
