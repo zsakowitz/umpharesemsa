@@ -54,6 +54,14 @@ client.on(Events.MessageCreate, async (message) => {
 
   for (const [name, execute] of Object.entries(commands)) {
     if (segments[0] == "?" + name) {
+      const user =
+        message.author.username +
+        (message.author.discriminator && message.author.discriminator != "0"
+          ? "#" + message.author.discriminator
+          : "")
+
+      console.group(user + ": " + message.content)
+
       /** @type {Record<string, true | undefined>} */
       const options = {}
 
@@ -69,9 +77,11 @@ client.on(Events.MessageCreate, async (message) => {
         })
         .map((segment) => segment.trim())
 
-      const result = await execute(args, options)
+      const result = execute(args, options)
 
       if (result != null) {
+        console.log(String(result))
+        console.groupEnd()
         await message.reply(result)
       }
 
@@ -120,12 +130,10 @@ const everything = [...allRoots, ...allAffixes]
  * @type {Record<
  *   string,
  *   (args: string[], options: Record<string, true | undefined>) =>
- *     import("discord.js").Awaitable<
- *       | string
- *       | MessagePayload
- *       | import("discord.js").MessageReplyOptions
- *       | undefined
- *     >
+ *     | string
+ *     | MessagePayload
+ *     | import("discord.js").MessageReplyOptions
+ *     | undefined
  * >}
  */
 const commands = {
