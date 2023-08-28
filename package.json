@@ -10,7 +10,9 @@
   "author": "",
   "license": "ISC",
   "prettier": {
-    "semi": false
+    "semi": false,
+    "printWidth": 80,
+    "proseWrap": "always"
   },
   "devDependencies": {
     "@types/node": "^20.5.6",
