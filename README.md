@@ -43,7 +43,7 @@ Tail segments include:
 
 Tail segments are unique in that they can all be represented as affixes.
 
-#### Writing Formatives
+### Writing Formatives
 
 To write a formative, start by writing the concatenation type (T1, T2, or none),
 stem, version, root, function, specification, and context. Then, add as many
@@ -66,7 +66,7 @@ Formatives are assumed to be nominal by default. To mark a framed verbal
 formative, end its gloss with **-FRM**, as in `l-c/7-FRM`. To mark a plain
 verbal formative, end its gloss with a mood or illocution, as in `l-OBS`.
 
-#### Writing Referentials
+### Writing Referentials
 
 To write a referential, start either with a referent or a suppletive adjunct,
 which we'll call the referential head. **1m**, **[1m+2m]+G**, and **[QUO]** are
@@ -89,7 +89,7 @@ Note that many referentials are also perfectly valid formative glosses. To see
 both the formative and referential interpretation of your gloss, set the `all`
 option on the `/gloss` command to `True`.
 
-#### Writing Adjuncts
+### Writing Adjuncts
 
 To write a bias adjunct, just write its abbreviation, such as **SOL**, **SKP**,
 or **ANP**.
@@ -108,7 +108,7 @@ are all valid suppletive adjuncts.
 The syntaxes of affixual adjuncts and modular adjuncts are somewhat more
 nuanced, and are discussed below.
 
-#### Writing Affixual Adjuncts
+### Writing Affixual Adjuncts
 
 An affixual adjunct consists of one or more tail segments joined with hyphens.
 
@@ -127,7 +127,7 @@ first affix.
 **tf/7**, **DPX-2:BEN**, and **(1m-ERG)-{VII:SUB}** are all valid affixual
 adjuncts.
 
-#### Writing Modular Adjuncts
+### Writing Modular Adjuncts
 
 A modular adjunct has a `Vn-Cn-Vn-Vn` structure. The final Vn segment may be
 replaced by scoping information, which is detailed below. The adjunct may also

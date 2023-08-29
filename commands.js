@@ -190,7 +190,7 @@ const commands = [
     async execute(interaction) {
       interaction.reply({
         content:
-          "Check out https://github.com/zsakowitz/umpharesemsa for a guide on using this bot.",
+          "Check out https://github.com/zsakowitz/umpharesemsa/blob/main/README.md for a guide on using this bot.",
         ephemeral: true,
       })
     },
