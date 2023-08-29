@@ -136,10 +136,20 @@ const commands = [
           .setName("text")
           .setDescription("The string to be glossed.")
           .setRequired(true)
+      )
+      .addStringOption(
+        new SlashCommandStringOption()
+          .setName("type")
+          .setDescription("Whether to show short or full glosses.")
+          .setChoices(
+            { name: "full", value: "full" },
+            { name: "short", value: "short" }
+          )
       ),
 
     async execute(interaction) {
       const text = interaction.options.getString("text", true)
+      const type = interaction.options.getString("type")
 
       const words = splitWords(text)
 
@@ -150,7 +160,11 @@ const commands = [
               const parsed = parseWord(word)
 
               if (parsed) {
-                return bold(word) + ": " + glossWord(parsed)
+                return (
+                  bold(word) +
+                  ": " +
+                  glossWord(parsed)[type == "full" ? "full" : "short"]
+                )
               } else {
                 return bold(word) + ": " + italic("Unable to parse.")
               }
