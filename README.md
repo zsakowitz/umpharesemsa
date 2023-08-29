@@ -2,40 +2,17 @@ Hi! I'm @umpharesemsa, a complement to the Ithkuil IV glossing bot
 @irburučpaizya. I can help you generate all kinds of words in Ithkuil, and I can
 also help you look up roots and affixes.
 
-<!-- prettier-ignore -->
-__**Searching Roots and Affixes**__
+## Overview of Commands
 
-- **?find word**: searches roots and affixes for "word"
-- **?find --root word**: searches roots for "word"
-- **?find --affix word**: searches affixes for "word"
-- **?find ABR**: finds an affix based on abbreviation and outputs its values
-- **?find ABR/2**: finds an affix based on abbreviation and degree
+- **/find root query**: searches for roots based on "query"
+- **/find affix query**: searches for affixes based on "query"
+- **/find any query**: searches for roots and affixes based on "query"
+- **/gloss word_or_sentence**: glosses the given word or sentence
+- **/help**: links to this help page
+- **/ungloss gloss_string**: turns the given gloss string into the word; see
+  details below
 
-Example 1:
-
-> Command: **?find warm**
->
-> Output:  
-> S3-fph: warm front  
-> tf/6: (too) warm  
-> S3-fšr: warm climate  
-> S1-ḑh: feeling warm  
-> S1-žxw: warm to the touch  
-> S0-ḑh: sensation of warmth  
-> S0-žxw: warm/hot to the touch  
-> S1-ňçml: swarmandal  
-> tf/5: mild, comfortably cool or warm  
-> S1-rtr: kindness/warm-heartedness/decency  
-> 52 more...
-
-Example 2:
-
-> Command: **?find EFE/7**
->
-> Output: **m/7**: detrimental to 3rd party
-
-<!-- prettier-ignore -->
-__**Generating Words**__
+## Generating Words
 
 - **?ungloss string**: converts the gloss "string" to a word
 - **?ungloss --full string**: converts the gloss "string" to a word and shows
@@ -66,7 +43,7 @@ Tail segments include:
 
 Tail segments are unique in that they can all be represented as affixes.
 
-**Writing Formatives**
+#### Writing Formatives
 
 To write a formative, start by writing the concatenation type (T1, T2, or none),
 stem, version, root, function, specification, and context. Then, add as many
@@ -89,7 +66,7 @@ Formatives are assumed to be nominal by default. To mark a framed verbal
 formative, end its gloss with **-FRM**, as in `l-c/7-FRM`. To mark a plain
 verbal formative, end its gloss with a mood or illocution, as in `l-OBS`.
 
-**Writing Referentials**
+#### Writing Referentials
 
 To write a referential, start either with a referent or a suppletive adjunct,
 which we'll call the referential head. **1m**, **[1m+2m]+G**, and **[QUO]** are
@@ -109,10 +86,10 @@ case, it will be used as the second case of the combination referential.
 referentials.
 
 Note that many referentials are also perfectly valid formative glosses. To see
-both the formative and referential interpretation of your gloss, use
-`?gloss --all ...` instead of `?gloss ...`.
+both the formative and referential interpretation of your gloss, set the `all`
+option on the `/gloss` command to `True`.
 
-**Writing Adjuncts**
+#### Writing Adjuncts
 
 To write a bias adjunct, just write its abbreviation, such as **SOL**, **SKP**,
 or **ANP**.
@@ -131,7 +108,7 @@ are all valid suppletive adjuncts.
 The syntaxes of affixual adjuncts and modular adjuncts are somewhat more
 nuanced, and are discussed below.
 
-**Writing Affixual Adjuncts**
+#### Writing Affixual Adjuncts
 
 An affixual adjunct consists of one or more tail segments joined with hyphens.
 
@@ -150,7 +127,7 @@ first affix.
 **tf/7**, **DPX-2:BEN**, and **(1m-ERG)-{VII:SUB}** are all valid affixual
 adjuncts.
 
-**Writing Modular Adjuncts**
+#### Writing Modular Adjuncts
 
 A modular adjunct has a `Vn-Cn-Vn-Vn` structure. The final Vn segment may be
 replaced by scoping information, which is detailed below. The adjunct may also
@@ -175,4 +152,35 @@ adjuncts.
 
 Note that many modular adjuncts are also perfectly valid affixual adjunct
 glosses. To see both the affixual adjunct and modular adjunct interpretations of
-your gloss, use `?gloss --all ...` instead of `?gloss ...`.
+your gloss, set the `all` option on the `/gloss` command to `True`.
+
+## Searching Roots and Affixes
+
+- **?find word**: searches roots and affixes for "word"
+- **?find --root word**: searches roots for "word"
+- **?find --affix word**: searches affixes for "word"
+- **?find ABR**: finds an affix based on abbreviation and outputs its values
+- **?find ABR/2**: finds an affix based on abbreviation and degree
+
+Example 1:
+
+> Command: **?find warm**
+>
+> Output:  
+> S3-fph: warm front  
+> tf/6: (too) warm  
+> S3-fšr: warm climate  
+> S1-ḑh: feeling warm  
+> S1-žxw: warm to the touch  
+> S0-ḑh: sensation of warmth  
+> S0-žxw: warm/hot to the touch  
+> S1-ňçml: swarmandal  
+> tf/5: mild, comfortably cool or warm  
+> S1-rtr: kindness/warm-heartedness/decency  
+> 52 more...
+
+Example 2:
+
+> Command: **?find EFE/7**
+>
+> Output: **m/7**: detrimental to 3rd party

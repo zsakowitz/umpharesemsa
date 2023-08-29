@@ -180,6 +180,21 @@ const commands = [
       )
     },
   },
+
+  // help
+  {
+    data: new SlashCommandBuilder()
+      .setName("help")
+      .setDescription("Shows a guide to using this bot."),
+
+    async execute(interaction) {
+      interaction.reply({
+        content:
+          "Check out https://github.com/zsakowitz/umpharesemsa for a guide on using this bot.",
+        ephemeral: true,
+      })
+    },
+  },
 ]
 
 export const commandCollection = new Collection(
