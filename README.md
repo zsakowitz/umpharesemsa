@@ -14,12 +14,13 @@ also help you look up roots and affixes.
 
 ## Generating Words
 
-- **?ungloss string**: converts the gloss "string" to a word
-- **?ungloss --full string**: converts the gloss "string" to a word and shows
-  the full gloss
+- **/ungloss string**: converts the gloss "string" to a word
 
-> When typing glosses, don't use the meanings of roots and affixes; type how
-> they're spelled. Write `rr-CSV-G-tf/7-ERG`, not `cat-CSV-G-warm-ERG`.
+> If you want to directly use root and affix descriptions in your glosses, make
+> sure roots are surrounded with double quotes and affixes are surrounded by
+> single quotes.
+>
+> Write **"cat"-CSV-G-'warm'-ERG**, not **cat-CSV-G-warm-ERG**.
 
 To be parsed properly, follow the guide below for typing glosses.
 
