@@ -1,5 +1,7 @@
 // @ts-check
 
+import { glossWord } from "@zsnout/ithkuil/gloss"
+import { parseWord } from "@zsnout/ithkuil/parse"
 import {
   Collection,
   Events,
@@ -7,6 +9,8 @@ import {
   SlashCommandBuilder,
   SlashCommandStringOption,
   SlashCommandSubcommandBuilder,
+  bold,
+  italic,
 } from "discord.js"
 import { client } from "./client.js"
 import { findCommand } from "./commands/find.js"
@@ -136,6 +140,30 @@ const commands = [
 
     async execute(interaction) {
       const text = interaction.options.getString("text", true)
+
+      const words = splitWords(text)
+
+      interaction.reply(
+        words
+          .map((word) => {
+            try {
+              const parsed = parseWord(word)
+
+              if (parsed) {
+                return bold(word) + ": " + glossWord(parsed)
+              } else {
+                return bold(word) + ": " + italic("Unable to parse.")
+              }
+            } catch (error) {
+              return (
+                bold(word) +
+                ": " +
+                italic(String(error instanceof Error ? error.message : error))
+              )
+            }
+          })
+          .join("\n") || italic("No words provided.")
+      )
     },
   },
 ]
