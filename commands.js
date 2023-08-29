@@ -63,7 +63,70 @@ const commands = [
     async execute(interaction) {
       const mode = interaction.options.getString("mode")
       const all = interaction.options.getBoolean("all")
-      const gloss = interaction.options.getString("gloss", true)
+
+      try {
+        var gloss = interaction.options
+          .getString("gloss", true)
+          .split(/-/g)
+          .map((segment) => {
+            if (
+              (segment.startsWith('"') ||
+                segment.startsWith("“") ||
+                segment.startsWith("”")) &&
+              (segment.endsWith('"') ||
+                segment.endsWith("“") ||
+                segment.endsWith("”")) &&
+              segment.length >= 3
+            ) {
+              const items = fuzzysort.go(segment.slice(1, -1), allRoots, {
+                keys: ["label"],
+                limit: 1,
+                threshold: -500,
+              })
+
+              if (items[0]) {
+                return "S" + items[0].obj.stem + "-" + items[0].obj.cr
+              }
+
+              throw new Error("No root found for " + segment + ".")
+            }
+
+            if (
+              (segment.startsWith("'") ||
+                segment.startsWith("‘") ||
+                segment.startsWith("’")) &&
+              (segment.endsWith("'") ||
+                segment.endsWith("‘") ||
+                segment.endsWith("’")) &&
+              segment.length >= 3
+            ) {
+              const items = fuzzysort.go(
+                segment.slice(1, -1),
+                allAffixesByDegree,
+                {
+                  keys: ["label"],
+                  limit: 1,
+                  threshold: -500,
+                }
+              )
+
+              if (items[0]) {
+                return items[0].obj.cs + "/" + items[0].obj.index
+              }
+
+              throw new Error("No affix found for " + segment + ".")
+            }
+
+            return segment
+          })
+          .join("-")
+      } catch (error) {
+        interaction.reply(
+          italic(String(error instanceof Error ? error.message : error))
+        )
+
+        return
+      }
 
       interaction.reply(
         unglossCommand(splitWords(gloss), {
@@ -149,71 +212,8 @@ const commands = [
       ),
 
     async execute(interaction) {
+      const text = interaction.options.getString("text", true)
       const type = interaction.options.getString("type")
-
-      try {
-        var text = interaction.options
-          .getString("text", true)
-          .split(/-/g)
-          .map((segment) => {
-            if (
-              (segment.startsWith('"') ||
-                segment.startsWith("“") ||
-                segment.startsWith("”")) &&
-              (segment.endsWith('"') ||
-                segment.endsWith("“") ||
-                segment.endsWith("”")) &&
-              segment.length >= 3
-            ) {
-              const items = fuzzysort.go(segment.slice(1, -1), allRoots, {
-                keys: ["label"],
-                limit: 1,
-                threshold: -500,
-              })
-
-              if (items[0]) {
-                return "S" + items[0].obj.stem + items[0].obj.cr
-              }
-
-              throw new Error("No root found for " + segment + ".")
-            }
-
-            if (
-              (segment.startsWith("'") ||
-                segment.startsWith("‘") ||
-                segment.startsWith("’")) &&
-              (segment.endsWith("'") ||
-                segment.endsWith("‘") ||
-                segment.endsWith("’")) &&
-              segment.length >= 3
-            ) {
-              const items = fuzzysort.go(
-                segment.slice(1, -1),
-                allAffixesByDegree,
-                {
-                  keys: ["label"],
-                  limit: 1,
-                  threshold: -500,
-                }
-              )
-
-              if (items[0]) {
-                return items[0].obj.cs + "/" + items[0].obj.index
-              }
-
-              throw new Error("No affix found for " + segment + ".")
-            }
-
-            return segment
-          })
-          .join("-")
-      } catch (error) {
-        interaction.reply(
-          italic(String(error instanceof Error ? error.message : error))
-        )
-
-        return
-      }
 
       const words = splitWords(text)
 
