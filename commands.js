@@ -1,7 +1,7 @@
 // @ts-check
 
 import { glossWord } from "@zsnout/ithkuil/gloss"
-import { parseWord } from "@zsnout/ithkuil/parse"
+import { parseSentences, parseWord } from "@zsnout/ithkuil/parse"
 import {
   Collection,
   Events,
@@ -16,6 +16,7 @@ import fuzzysort from "fuzzysort"
 import { client } from "./client.js"
 import { allAffixesByDegree, allRoots, findCommand } from "./commands/find.js"
 import { unglossCommand } from "./commands/ungloss.js"
+import { glossCommand } from "./commands/glossCommand.js"
 
 function splitWords(/** @type {string} */ input) {
   return input
@@ -215,33 +216,7 @@ const commands = [
       const text = interaction.options.getString("text", true)
       const type = interaction.options.getString("type")
 
-      const words = splitWords(text)
-
-      interaction.reply(
-        words
-          .map((word) => {
-            try {
-              const parsed = parseWord(word)
-
-              if (parsed) {
-                return (
-                  bold(word) +
-                  ": " +
-                  glossWord(parsed)[type == "full" ? "full" : "short"]
-                )
-              } else {
-                return bold(word) + ": " + italic("Unable to parse.")
-              }
-            } catch (error) {
-              return (
-                bold(word) +
-                ": " +
-                italic(String(error instanceof Error ? error.message : error))
-              )
-            }
-          })
-          .join("\n") || italic("No words provided.")
-      )
+      interaction.reply(glossCommand(text, type))
     },
   },
 
