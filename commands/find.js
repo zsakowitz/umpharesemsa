@@ -4,14 +4,14 @@ import { affixes, roots } from "@zsnout/ithkuil/data"
 import { bold, italic } from "discord.js"
 import fuzzysort from "fuzzysort"
 
-const allRoots = roots.flatMap((root) => [
+export const allRoots = roots.flatMap((root) => [
   { stem: 0, label: root.stems[0], cr: root.cr, abbr: "" },
   { stem: 1, label: root.stems[1], cr: root.cr, abbr: "" },
   { stem: 2, label: root.stems[2], cr: root.cr, abbr: "" },
   { stem: 3, label: root.stems[3], cr: root.cr, abbr: "" },
 ])
 
-const allAffixesByDegree = affixes
+export const allAffixesByDegree = affixes
   .flatMap((affix) =>
     affix.degrees.map((degree, index) => ({
       cs: affix.cs,
