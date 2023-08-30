@@ -1,8 +1,7 @@
-// @ts-nocheck
-
 import { affixes, roots } from "@zsnout/ithkuil/data"
 import { bold, italic } from "discord.js"
 import fuzzysort from "fuzzysort"
+import { allGrammaticalCategories } from "./grammar.js"
 
 export const allRoots = roots.flatMap((root) => [
   { stem: 0, label: root.stems[0], cr: root.cr, abbr: "" },
@@ -30,13 +29,21 @@ const allAffixesByAbbreviation = affixes.map((affix) => ({
 
 const allAffixes = [...allAffixesByDegree, ...allAffixesByAbbreviation]
 
-const everything = [...allRoots, ...allAffixes]
+const affixesAndRoots = [...allRoots, ...allAffixes]
+const affixesAndGrammar = [...allAffixes, ...allGrammaticalCategories]
+const rootsAndGrammar = [...allRoots, ...allGrammaticalCategories]
+
+const everything = [...allRoots, ...allAffixes, ...allGrammaticalCategories]
 
 export function findCommand(
   /** @type {string} */ query,
-  /** @type {{ root: boolean, affix: boolean }} */ { root, affix }
+  /** @type {{ affix: boolean, grammar: boolean, root: boolean }} */ {
+    affix,
+    grammar,
+    root,
+  }
 ) {
-  if ((affix || (!root && !affix)) && query.length == 3) {
+  if ((affix || (!affix && !grammar && !root)) && query.length == 3) {
     const affix = affixes.find((affix) => affix.abbreviation == query)
 
     if (affix) {
@@ -57,7 +64,7 @@ export function findCommand(
   }
 
   if (
-    (affix || (!root && !affix)) &&
+    (affix || (!affix && !grammar && !root)) &&
     query.length == 5 &&
     query[3] == "/" &&
     "123456789".includes(query[4])
@@ -71,11 +78,27 @@ export function findCommand(
     }
   }
 
-  const inputSpace =
-    root && !affix ? allRoots : !root && affix ? allAffixes : everything
+  const inputSpace = root
+    ? affix
+      ? grammar
+        ? everything
+        : affixesAndRoots
+      : grammar
+      ? rootsAndGrammar
+      : allRoots
+    : affix
+    ? grammar
+      ? affixesAndGrammar
+      : allAffixes
+    : grammar
+    ? allGrammaticalCategories
+    : everything
 
   const filtered = fuzzysort
-    .go(query, inputSpace, { keys: ["label", "abbr"], threshold: -500 })
+    .go(query, inputSpace, {
+      keys: ["label", "abbr", "cs", "cr"],
+      threshold: -500,
+    })
     .map((x) => x)
 
   let ellipsis = ""
@@ -88,7 +111,15 @@ export function findCommand(
   const output =
     filtered
       .map(({ obj: item }) => {
-        if ("cr" in item) {
+        if ("category" in item) {
+          if (item.isCategoryName) {
+            return bold(item.category)
+          } else {
+            return (
+              bold(item.usage) + ": " + item.label + " (" + item.category + ")"
+            )
+          }
+        } else if ("cr" in item) {
           return bold("S" + item.stem + "-" + item.cr) + ": " + item.label
         } else if ("index" in item) {
           return bold(item.cs + "/" + item.index) + ": " + item.label

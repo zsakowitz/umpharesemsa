@@ -1,7 +1,5 @@
 // @ts-check
 
-import { glossWord } from "@zsnout/ithkuil/gloss"
-import { parseSentences, parseWord } from "@zsnout/ithkuil/parse"
 import {
   Collection,
   Events,
@@ -9,14 +7,13 @@ import {
   SlashCommandBuilder,
   SlashCommandStringOption,
   SlashCommandSubcommandBuilder,
-  bold,
   italic,
 } from "discord.js"
 import fuzzysort from "fuzzysort"
 import { client } from "./client.js"
 import { allAffixesByDegree, allRoots, findCommand } from "./commands/find.js"
-import { unglossCommand } from "./commands/ungloss.js"
 import { glossCommand } from "./commands/glossCommand.js"
+import { unglossCommand } from "./commands/ungloss.js"
 
 function splitWords(/** @type {string} */ input) {
   return input
@@ -143,7 +140,7 @@ const commands = [
   {
     data: new SlashCommandBuilder()
       .setName("find")
-      .setDescription("Finds an affix or root.")
+      .setDescription("Finds an affix, root, or grammatical category.")
       .addSubcommand(
         new SlashCommandSubcommandBuilder()
           .setName("affix")
@@ -158,7 +155,18 @@ const commands = [
       .addSubcommand(
         new SlashCommandSubcommandBuilder()
           .setName("any")
-          .setDescription("Finds an affix or root.")
+          .setDescription("Finds an affix, root, or grammatical category.")
+          .addStringOption(
+            new SlashCommandStringOption()
+              .setName("query")
+              .setDescription("The query to search for.")
+              .setRequired(true)
+          )
+      )
+      .addSubcommand(
+        new SlashCommandSubcommandBuilder()
+          .setName("grammar")
+          .setDescription("Finds a grammatical category.")
           .addStringOption(
             new SlashCommandStringOption()
               .setName("query")
@@ -184,8 +192,9 @@ const commands = [
 
       interaction.reply(
         findCommand(query, {
-          root: type == "root",
           affix: type == "affix",
+          grammar: type == "grammar",
+          root: type == "root",
         })
       )
     },
