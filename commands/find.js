@@ -4,10 +4,10 @@ import fuzzysort from "fuzzysort"
 import { allGrammaticalCategories } from "./grammar.js"
 
 export const allRoots = roots.flatMap((root) => [
-  { stem: 0, label: root.stems[0], cr: root.cr, abbr: "" },
-  { stem: 1, label: root.stems[1], cr: root.cr, abbr: "" },
-  { stem: 2, label: root.stems[2], cr: root.cr, abbr: "" },
-  { stem: 3, label: root.stems[3], cr: root.cr, abbr: "" },
+  { stem: 0, label: root.stems[0], cr: root.cr },
+  { stem: 1, label: root.stems[1], cr: root.cr },
+  { stem: 2, label: root.stems[2], cr: root.cr },
+  { stem: 3, label: root.stems[3], cr: root.cr },
 ])
 
 export const allAffixesByDegree = affixes
@@ -96,7 +96,7 @@ export function findCommand(
 
   const filtered = fuzzysort
     .go(query, inputSpace, {
-      keys: ["label", "abbr", "cs", "cr"],
+      keys: ["abbr", "category", "cr", "cs", "label"],
       threshold: -500,
     })
     .map((x) => x)
