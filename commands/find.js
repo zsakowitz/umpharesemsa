@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { affixes, roots } from "@zsnout/ithkuil/data"
 import { bold, italic } from "discord.js"
 import fuzzysort from "fuzzysort"
